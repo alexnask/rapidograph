@@ -25,6 +25,7 @@ Ruler: class {
     trace: func(paper: Paper) {
         while(source hasOrder?()) {
             (path, vars, contents) := source getOrder()
+            "Path %s" printfln(path)
 
             maxMatches := 0
             maxPattern: String
@@ -32,9 +33,9 @@ Ruler: class {
 
             // Find the best match of the path of the order in our links
             links each(|pattern, template|
-                matches := Regexp compile(pattern) matches(path)
+                matches := Regexp compile(pattern, RegexpOption ANCHORED | RegexpOption DOLLAR_ENDONLY) matches(path)
                 data[pattern] = matches
-                if(maxMatches < matches groupCount) {
+                if(matches && maxMatches < matches groupCount) {
                     maxMatches = matches groupCount
                     maxPattern = pattern
                 }
@@ -47,6 +48,7 @@ Ruler: class {
                     matches := data[maxPattern]
                     template := links[maxPattern]
                     for(i in 0 .. matches groupCount) {
+                        matches group(i) println()
                         template = template replaceAll("<%d>" format(i+1), matches group(i))
                     }
 

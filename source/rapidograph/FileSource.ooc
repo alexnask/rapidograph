@@ -3,6 +3,16 @@ import structs/[ArrayList, HashBag]
 import text/json
 import Source
 
+// get the path difference of l and r
+operator - (l, r: File) -> String {
+    if(!l || !r) return ""
+    else if(l getAbsolutePath() == r getAbsolutePath()) return ""
+
+    ret := (l - r parent()) + '/' + r name()
+    if(ret startsWith?("/")) ret = ret substring(1)
+    ret
+}
+
 FileSource: class extends Source {
     file: File
     index := 0
@@ -32,12 +42,12 @@ FileSource: class extends Source {
     getFileOrder: func (f: File, acc: SSizeT = 0) -> (String, HashBag, String) {
         if(!f dir?()) {
             vars: HashBag = null
-            path := f path
+            path := file - f
             contents := f read()
 
-            if(file path endsWith?(".order")) {
+            if(path endsWith?(".order")) {
                 vars = JSON parse(contents)
-                path = f path[0 .. -7]
+                path = path[0 .. -7]
             }
 
             index += 1

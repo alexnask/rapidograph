@@ -11,7 +11,7 @@ ruler registerInk(DummyInk new()) // ruler inks add(DummyInk new())
 // This indicates files that come from our source's 'images' directory are not to be processeced by an Ink but rather passed as-is to the paper
 ruler staticLink("images/(.*)")
 // Set up a simple link, uses PCRE patterns
-ruler link("[A-Za-z]*.html", "templates/<1>.html")
+ruler link("[A-Za-z]+\.html", "templates/<1><2>.html")
 // Publish the whole thing locally! o/
 ruler trace(LocalPaper new("website"))
 
