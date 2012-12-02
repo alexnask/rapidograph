@@ -13,7 +13,7 @@ ruler staticLink("images")
 // Set up a simple link
 ruler link("%s", "templates/%s.html")
 // Publish the whole thing locally! o/
-ruler trace(WebsitePaper new())
+ruler trace(LocalPaper new("website"))
 
 /*
  * - dir/
