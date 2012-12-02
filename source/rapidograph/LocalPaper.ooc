@@ -6,7 +6,7 @@ LocalPaper: class extends Paper {
 
     init: func(path: String) {
         base = File new(path)
-        if(!path exists?()) base mkdir()
+        if(!base exists?()) base mkdir()
     }
 
     add: func(path, contents: String) {

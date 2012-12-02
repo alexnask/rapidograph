@@ -1,5 +1,5 @@
 import io/File
-import structs/HashBag
+import structs/[ArrayList, HashBag]
 import text/json
 import Source
 
