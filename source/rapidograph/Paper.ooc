@@ -1,4 +1,4 @@
 
 Paper: abstract class {
-    add: abstract func (path: String, contents: String)
+    add: abstract func (path, contents: String)
 }

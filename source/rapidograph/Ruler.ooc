@@ -1,4 +1,6 @@
 import structs/[ArrayList, HashMap]
+import io/FileReader
+import text/Regexp
 import Source, Ink, Paper
 
 Ruler: class {
@@ -21,6 +23,49 @@ Ruler: class {
     }
 
     trace: func(paper: Paper) {
+        while(source hasOrder?()) {
+            (path, vars, contents) := source getOrder()
+
+            maxMatches := 0
+            maxPattern: String
+            data := HashMap<String, Match> new(links getSize())
+
+            // Find the best match of the path of the order in our links
+            links each(|pattern, template|
+                matches := Regexp compile(pattern) matches(path)
+                data[pattern] = matches
+                if(maxMatches < matches groupCount) {
+                    maxMatches = matches groupCount
+                    maxPattern = pattern
+                }
+            )
+
+            // If we do have a match
+            if(maxMatches > 0) {
+                if(!links[maxPattern] empty?()) {
+                    // Find out what template to use
+                    matches := data[maxPattern]
+                    template := links[maxPattern]
+                    for(i in 0 .. matches groupCount) {
+                        template = template replaceAll("<%d>" format(i+1), matches group(i))
+                    }
+
+                    // Now search for an ink that can handle this template
+                    for(ink in inks) {
+                        if(ink valid?(template)) {
+                            reader := FileReader new(template)
+                            templateData := reader readAll()
+                            reader close()
+
+                            contents = ink draw(templateData, vars)
+                            break
+                        }
+                    }
+                }
+                // Give our paper the result!
+                paper add(path, contents)
+            }
+        }
     }
 }
 
