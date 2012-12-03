@@ -3,7 +3,7 @@ import rapidograph/[FileSource, Ruler, DummyInk, LocalPaper]
 
 // Set up a file source
 // This source will send the ruler orders for the files found in the directory 'dir'
-source := FileSource new("dir")
+source := FileSource new("source")
 
 ruler := Ruler new(source)
 // Add a dummy ink to our ruler
@@ -13,20 +13,5 @@ ruler staticLink("images/.*")
 // Set up a simple link, uses PCRE patterns
 ruler link("[.*]?/?([A-Za-z]+)\.html", "templates/<1>.html")
 // Publish the whole thing locally! o/
-ruler trace(LocalPaper new("website"))
+ruler trace(LocalPaper new("deployed"))
 
-/*
- * - dir/
- * -- index.order
- * -- images/
- * --- banner.png
- * - templates/
- * -- index.html
- ************
- * Publishes
- ************
- * - website/
- * -- index.html (results after using the variables pulled from index.order to process the mustache templates/index.html file)
- * -- images/
- * --- banner.png (untouched)
- */

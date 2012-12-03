@@ -7,5 +7,5 @@ before_install:
 script:
   - export OOC_LIBS=$PWD
   - cd samples/simple
-  - rock -v -r simple
+  - rock -v -r -o=test simple && ./test
   - ls -R deployed
