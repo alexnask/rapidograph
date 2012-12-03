@@ -46,7 +46,7 @@ Ruler: class {
                     // Find out what template to use
                     matches := data[maxPattern]
                     template := links[maxPattern]
-                    for(i in 1 .. matches groupCount) {
+                    for(i in 0 .. matches groupCount) {
                         template = template replaceAll("<%d>" format(i), matches group(i))
                     }
 
