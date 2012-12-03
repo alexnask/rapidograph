@@ -10,6 +10,12 @@ LocalPaper: class extends Paper {
     }
 
     add: func(path, contents: String) {
+        file := File new(base getAbsolutePath() + '/' + path)
+        while(!file parent() exists?()) {
+            file parent() mkdir()
+            file = file parent()
+        }
+
         File new(base getAbsolutePath() + '/' + path) write(contents)
     }
 }

@@ -25,7 +25,6 @@ Ruler: class {
     trace: func(paper: Paper) {
         while(source hasOrder?()) {
             (path, vars, contents) := source getOrder()
-            "Path %s" printfln(path)
 
             maxMatches := 0
             maxPattern: String
@@ -47,9 +46,8 @@ Ruler: class {
                     // Find out what template to use
                     matches := data[maxPattern]
                     template := links[maxPattern]
-                    for(i in 0 .. matches groupCount) {
-                        matches group(i) println()
-                        template = template replaceAll("<%d>" format(i+1), matches group(i))
+                    for(i in 1 .. matches groupCount) {
+                        template = template replaceAll("<%d>" format(i), matches group(i))
                     }
 
                     // Now search for an ink that can handle this template

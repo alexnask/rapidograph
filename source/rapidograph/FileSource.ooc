@@ -16,30 +16,31 @@ operator - (l, r: File) -> String {
 FileSource: class extends Source {
     file: File
     index := 0
-    childrenSize := 0
+    files := 0
 
     init: func(path: String) {
         file = File new(path)
         if(file exists?() && file dir?()) {
             file walk(|_|
-                childrenSize += 1
+                files += 1
                 true
             )
-        }
+        } else files += 1
     }
 
     hasOrder?: func -> Bool {
-        file exists?() && match {
-            case !file dir?() => index == 0
-            case => index < childrenSize
-        }
+        file != null && file exists?() && index < files
     }
 
     getOrder: func -> (String, HashBag, String) {
-        getFileOrder(file)
+        // See rock#499
+        (a, b, c) := getFileOrder(file)
+        (a, b, c)
     }
 
     getFileOrder: func (f: File, acc: SSizeT = 0) -> (String, HashBag, String) {
+        if(!hasOrder?()) return (null, null, null)
+
         if(!f dir?()) {
             vars: HashBag = null
             path := file - f
@@ -57,7 +58,6 @@ FileSource: class extends Source {
         children := f getChildren()
         for(i in 0 .. children getSize()) {
             if(acc + i >= index) {
-                index += 1
                 (a, b, c) := getFileOrder(children[i], acc + i)
                 if(a != null) return (a, b, c)
             }
