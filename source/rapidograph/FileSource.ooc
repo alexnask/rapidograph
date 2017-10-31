@@ -29,7 +29,7 @@ FileSource: class extends Source {
     }
 
     hasOrder?: func -> Bool {
-        file != null && file exists?() && index < files
+        !file && file exists?() && index < files
     }
 
     getOrder: func -> (String, HashBag, String) {
